@@ -1,0 +1,7 @@
+install xcode 
+install cocoapods
+pod init
+add alamofire
+pod 'Alamofire', '~> 4.5'
+pod install
+open WeatherApp.xcworkspace 
