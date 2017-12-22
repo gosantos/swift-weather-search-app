@@ -1,8 +1,15 @@
 import UIKit
 
+enum Segue: String {
+    case showDetail = "showDetail"
+}
+
+
 class SearchViewController: UIViewController {
 
     @IBOutlet weak var cityNameTextField: UITextField!
+
+    private let segueName = "showDetail"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,36 +23,24 @@ class SearchViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
-        if segue.identifier == "showDetail" {
-            let cityName = self.cityNameTextField.text
+        if segue.identifier == Segue.showDetail.rawValue {
             if let detail = segue.destination as? WeatherDetailViewController {
-                detail.cityName = cityName
+                detail.cityName = self.cityNameTextField.text
             }
         }
-        
         self.cityNameTextField.resignFirstResponder()
-    
     }
 }
 
 extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("textFieldShouldReturn")
-        
-        guard let text = textField.text else {
-            return false
-        }
-        
-        if text.count > 3 {
-            self.performSegue(withIdentifier: "showDetail", sender: self)
+        if let text = textField.text, text.count > 3 {
+            self.performSegue(withIdentifier: Segue.showDetail.rawValue, sender: self)
             return true
         } else {
             return false
         }
-        
-    }
-    
+    }    
 }
 

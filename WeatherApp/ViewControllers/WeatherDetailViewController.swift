@@ -16,6 +16,11 @@ class WeatherDetailViewController: UIViewController {
         ServiceAPI.getWheather(cityName: cityName) { [weak self] (detail, error) in
             if let error = error {
                 print("Error: \(error)")
+                let alert = UIAlertController(title: "Ops!", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { __SRD in
+                    self?.navigationController?.popViewController(animated: true)
+                }))
+                self?.present(alert, animated: true)
             } else if let detail = detail {
                 self?.updateValues(detail)
             }
