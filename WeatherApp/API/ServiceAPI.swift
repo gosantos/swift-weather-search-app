@@ -35,10 +35,11 @@ class ServiceAPI {
             
             if let json = response.result.value as? [String:AnyObject] {
                 guard let temperature = json["main"]?["temp"] as? Float, let weather = json["weather"] as? [AnyObject], let description = weather[0]["description"] as? String else {
-                    completion(nil, ServiceAPIError.weatherDetailParseError)
+                    let errorMessage = json["message"] as? String ?? ""
+                    completion(nil, ServiceAPIError.weatherDetailParseError(errorMessage.capitalized))
                     return
                 }
-                let detail = WeatherDetail(temperature: temperature - 273, description: description)
+                let detail = WeatherDetail(temperature: ceilf(temperature - 273), description: description)
                 completion(detail, nil)
             } else {
                 completion(nil, ServiceAPIError.serverResponseParseError)

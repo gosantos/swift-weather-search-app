@@ -9,8 +9,6 @@ class SearchViewController: UIViewController {
 
     @IBOutlet weak var cityNameTextField: UITextField!
 
-    private let segueName = "showDetail"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -30,12 +28,28 @@ class SearchViewController: UIViewController {
         }
         self.cityNameTextField.resignFirstResponder()
     }
+
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
+        if identifier == Segue.showDetail.rawValue {
+            return canSearchForCity
+        }
+        return true
+    }
+
+    private var canSearchForCity: Bool {
+        if let text = self.cityNameTextField.text, text.count > 3 {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let text = textField.text, text.count > 3 {
+        if canSearchForCity {
             self.performSegue(withIdentifier: Segue.showDetail.rawValue, sender: self)
             return true
         } else {

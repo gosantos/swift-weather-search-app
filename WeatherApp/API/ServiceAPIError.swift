@@ -2,7 +2,7 @@ import Foundation
 
 enum ServiceAPIError: Error {
     case cityNameParseError
-    case weatherDetailParseError
+    case weatherDetailParseError(String)
     case serverResponseParseError
 }
 
@@ -13,8 +13,8 @@ extension ServiceAPIError: LocalizedError {
             return "Cannot parse city name."
         case .serverResponseParseError:
             return "Cannot parse weather detail."
-        case .weatherDetailParseError:
-            return "Cannot parse API response"
+        case .weatherDetailParseError(let message):
+            return "Cannot parse API response. \(message)"
         }
     }
 }
